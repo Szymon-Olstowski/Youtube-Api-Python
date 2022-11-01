@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+  {% extends 'layout.html' %}
+
+
+
+
+  {% block content %}
+  <p>Wyszkukiwanie infromacji o kanale</p>
+  <form action="{{url_for('test')}}" method="post">
+    <input type="text" name="channel_id" placeholder="id kanału" id="channel_id" required>
+    <br>
+    <input type="text" name="key_api" placeholder="klucz api" id="key_api" required>
+    <br>
+    <input type="submit" value="Wykonaj">
+  <form>
+    <br>
+    <table border="1">
+      <tr>
+        <td>Nazawa kanłu</td><td>Subskrycje</td><td>Wyśletlenia kanału</td><td>Lilośc filmów</td><td>Uworzenie kanału</td><td>Customowy Url</td>
+      </tr>
+      <tr>
+        <td>{{testy[0]}}</td><td>{{testy[1]}}</td><td>{{testy[2]}}</td><td>{{testy[3]}}</td><td>{{testy[4]}}</td><td>{{testy[5]}}</td>
+      </tr>
+    </table>
+</body>
+</html>
+{%endblock %}

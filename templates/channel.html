@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+{% extends 'layout.html' %}
+
+{% block title %}Profile{% endblock %}
+
+
+{% block content %}
+<head>
+</head>
+<body>
+  <p>Wyszkukiwanie infromacji o filmie</p>
+  <form action="{{url_for('channel')}}" method="post">
+    <input type="text" name="id_film" placeholder="id filmu" id="id_film" required>
+    <br>
+    <input type="text" name="key_api" placeholder="klucz api" id="key_api" required>
+    <br>
+    <input type="submit" value="Wykonaj">
+  <form>
+    <br>
+    <table border="1">
+      <tr>
+        <td>Nazawa kanłu</td><td>Tytuł filmu</td><td>Wyśletlenia</td><td>Liośc łapek w góre</td><td>Czy jest na żywo</td><td>Publikacja</td><td>Liczba Komentazry</td>
+      </tr>
+      <tr>
+        <td>{{test[0]}}</td><td>{{test[1]}}</td><td>{{test[2]}}</td><td>{{test[3]}}</td><td>{{test[4]}}</td><td>{{test[5]}}</td><td>{{test[6]}}</td>
+      </tr>
+    </table>
+</body>
+</html>
+{%endblock %}
