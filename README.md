@@ -7,4 +7,3 @@ Do działania kodu potrzebny jest klucz api z strony console.cloud.google.com. T
 
 Strona kotzrysta z styli Bluma Css
 
-Info: Program nie wyśletla zawartości  apu filmu, gdy komentarze są wyłączone
