@@ -17,6 +17,7 @@ async def test(): #informacja kanału
         liczba_film=json.loads(data)["items"][0]["statistics"]["videoCount"] #ilośc filmów
         create_channel=json.loads(data)["items"][0]["snippet"]["publishedAt"] #utorzenie kanału
         customUrl=json.loads(data)["items"][0]["snippet"]["customUrl"] #customowy url
+        imagechannel=json.loads(data)["items"][0]["snippet"]["thumbnails"]["medium"]["url"] #zdjęcie kanału
         subkrycji=int(subs)
         testy.append(chanelname)
         testy.append(subkrycji)
@@ -24,6 +25,7 @@ async def test(): #informacja kanału
         testy.append(liczba_film)
         testy.append(datetime.strptime(create_channel,"%Y-%m-%dT%H:%M:%SZ"))
         testy.append(customUrl)
+        testy.append(imagechannel)
     return render_template("test.html",testy=testy)
 @app.route('/channel',methods=['GET', 'POST'])
 async def channel(): #informacja filmu/live
@@ -44,9 +46,31 @@ async def channel(): #informacja filmu/live
         test.append(likecount)
         test.append(nazywo)
         test.append(datetime.strptime(publikacja,"%Y-%m-%dT%H:%M:%SZ"))
-        kom_count=json.loads(data_f)["items"][0]["statistics"]["commentCount"] #liczba komentarzy
-        if kom_count:
+        minaturka=json.loads(data_f)["items"][0]["snippet"]["thumbnails"]["high"]["url"]#minaturka filmu
+        kom=json.loads(data_f)["items"][0]["statistics"]
+        if "commentCount" in kom:
+            kom_count=json.loads(data_f)["items"][0]["statistics"]["commentCount"] #liczba komentarzy
             test.append(kom_count)
+        else:
+            m="Wyłączone komentarze"
+            test.append(m)
+        test.append(minaturka)
     return render_template("channel.html",test=test)
 if __name__=="__main__":
     app.run(host="192.168.0.220") #wprowadz adres ip komputera
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
