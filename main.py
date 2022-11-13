@@ -34,7 +34,6 @@ async def channel(): #informacja filmu/live
         id_film=request.form['id_film']
         key_api=request.form['key_api']
         data_f=urllib.request.urlopen("https://www.googleapis.com/youtube/v3/videos?part=statistics&id="+id_film+"&part=snippet&key="+key_api).read()
-        viewcount=json.loads(data_f)["items"][0]["statistics"]["viewCount"] #wyświelenia
         likecount=json.loads(data_f)["items"][0]["statistics"]["likeCount"] #łapki w górę
         title=json.loads(data_f)["items"][0]["snippet"]["title"] #nazwa filmu/live
         chnaelnamevideo=json.loads(data_f)["items"][0]["snippet"]["channelTitle"] #nazwa kanłu
@@ -42,12 +41,17 @@ async def channel(): #informacja filmu/live
         publikacja=json.loads(data_f)["items"][0]["snippet"]["publishedAt"] #publikacja filmu/live
         test.append(chnaelnamevideo)
         test.append(title)
-        test.append(viewcount)
+        kom=json.loads(data_f)["items"][0]["statistics"]
+        if "viewCount" in kom:
+            viewcount=json.loads(data_f)["items"][0]["statistics"]["viewCount"] #wyświelenia
+            test.append(viewcount)
+        else:
+            m="Film widoczny dla wspierających"
+            test.append(m)
         test.append(likecount)
         test.append(nazywo)
         test.append(datetime.strptime(publikacja,"%Y-%m-%dT%H:%M:%SZ"))
         minaturka=json.loads(data_f)["items"][0]["snippet"]["thumbnails"]["high"]["url"]#minaturka filmu
-        kom=json.loads(data_f)["items"][0]["statistics"]
         if "commentCount" in kom:
             kom_count=json.loads(data_f)["items"][0]["statistics"]["commentCount"] #liczba komentarzy
             test.append(kom_count)
