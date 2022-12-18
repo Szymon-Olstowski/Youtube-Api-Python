@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+{% extends 'layout.html' %}
+
+{% block title %}Profile{% endblock %}
+
+
+{% block content %}
+<head>
+</head>
+<body>
+  <p>Komentarzy po filmem</p>
+  <form action="{{url_for('coments')}}" method="post">
+    <input type="text" name="id_film" placeholder="id filmu" id="id_film" required>
+    <br>
+    <input type="text" name="key_api" placeholder="klucz api" id="key_api" required>
+    <br>
+    <input type="text" name="count" placeholder="ilosć komentazry" id="count" required>
+    <br>
+    <input type="text" name="odp" placeholder="Wybór" id="dop" required>
+    <input type="submit" value="Wykonaj">
+  <form>
+    <br>
+    <table border="1">
+      <tr>
+        <td>Nazawa kanłu</td><td>text</td><td>data przesłania</td><td>Like</td>
+      </tr>
+      {% for test1 in s%}
+      <tr>
+        <td>{{test1[0]}}</td><td>{{test1[1]}}</td><td>{{test1[2]}}</td><td>{{test1[3]}}</td>
+      </tr>
+      {% endfor %}
+    </table>
+</body>
+</html>
+{%endblock %}
