@@ -17,17 +17,16 @@
     <br>
     <input type="text" name="count" placeholder="ilosć komentazry" id="count" required>
     <br>
-    <input type="text" name="odp" placeholder="Wybór" id="dop" required>
     <input type="submit" value="Wykonaj">
   <form>
     <br>
     <table border="1">
       <tr>
-        <td>Nazawa kanłu</td><td>text</td><td>data przesłania</td><td>Like</td>
+        <td>Nazawa kanłu</td><td>text</td><td>data przesłania</td><td>Like</td><td>Ilość Odpowiedźi</td>
       </tr>
-      {% for test1 in s%}
+      {% for test in tab %}
       <tr>
-        <td>{{test1[0]}}</td><td>{{test1[1]}}</td><td>{{test1[2]}}</td><td>{{test1[3]}}</td>
+        <td>{{test.name}}</td><td>{{test.description}}</td><td>{{test.date}}</td><td>{{test.like_count}}</td><td>{{test.reply_count}}</td>
       </tr>
       {% endfor %}
     </table>

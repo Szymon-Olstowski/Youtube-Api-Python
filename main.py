@@ -3,9 +3,6 @@ import json
 import urllib.request
 from datetime import datetime
 from urllib.request import urlopen
-import sqlite3
-conn = sqlite3.connect('com.sqlite',check_same_thread=False)
-c=conn.cursor()
 app = Flask(__name__)
 @app.route('/',methods=['GET', 'POST'])
 async def test(): #informacja kanału
@@ -63,32 +60,35 @@ async def channel(): #informacja filmu/live
             test.append(m)
         test.append(minaturka)
     return render_template("channel.html",test=test)
+
+class Tablica:
+    def __init__(self, name, description, date, like_count,reply_count):
+        self.name: str = name
+        self.description: str = description
+        self.date: str = date
+        self.like_count: int = like_count
+        self.reply_count: int= reply_count
+
+
 @app.route('/coments',methods=['GET', 'POST'])
 async def coments(): #informacja filmu/live
-    c.execute("SELECT * FROM com")
-    s=c.fetchall()
-    if request.method=='POST' and 'key_api' in request.form and 'id_film' in request.form and 'count' in request.form and 'odp' in request.form:
+    tab: list[Tablica] = []
+    if request.method=='POST' and 'key_api' in request.form and 'id_film' in request.form and 'count' in request.form:
         id_film=request.form['id_film']
         key_api=request.form['key_api']
         count=request.form['count']
-        odp=request.form['odp']
         data= data =urllib.request.urlopen("https://www.googleapis.com/youtube/v3/commentThreads?key="+key_api+"&textFormat=plainText&part=snippet&part=replies&videoId="+id_film+"&maxResults="+count).read()
         il=json.loads(data)["pageInfo"]["totalResults"]
-        print(il)
         for ia in range(il):
             names=json.loads(data)["items"][ia]["snippet"]["topLevelComment"]["snippet"]["authorDisplayName"]#nazwa kanału
             comt=json.loads(data)["items"][ia]["snippet"]["topLevelComment"]["snippet"]["textDisplay"]#treść
             published=json.loads(data)["items"][ia]["snippet"]["topLevelComment"]["snippet"]["publishedAt"]#publikacja
             p=datetime.strptime(published,"%Y-%m-%dT%H:%M:%SZ")
-            x=json.loads(data)["items"][ia]["snippet"]["totalReplyCount"]#ilośc comments
             likes=json.loads(data)["items"][ia]['snippet']["topLevelComment"]["snippet"]["likeCount"]#polubnienia komentarzy
-            if odp=="1":
-                c.execute('INSERT INTO com VALUES(?,?,?,?)' ,(names,comt,p,likes))
-            if odp=="2":
-                c.execute("DELETE FROM com")
-            c.connection.commit()
-    return render_template("comments.html",s=s)
-
+            x=json.loads(data)["items"][ia]["snippet"]["totalReplyCount"]#ilośc comments
+            a = Tablica(name=names, description=comt, date=p, like_count=likes,reply_count=x)
+            tab.append(a)  
+    return render_template("comments.html",tab=tab)
 if __name__=="__main__":
     app.run(host="192.168.0.220") #wprowadz adres ip komputera
 
