@@ -68,7 +68,7 @@ class Tablica:
         self.date: str = date
         self.like_count: int = like_count
         self.reply_count: int= reply_count
-
+    
 
 @app.route('/coments',methods=['GET', 'POST'])
 async def coments(): #informacja filmu/live
@@ -87,7 +87,20 @@ async def coments(): #informacja filmu/live
             likes=json.loads(data)["items"][ia]['snippet']["topLevelComment"]["snippet"]["likeCount"]#polubnienia komentarzy
             x=json.loads(data)["items"][ia]["snippet"]["totalReplyCount"]#ilośc comments
             a = Tablica(name=names, description=comt, date=p, like_count=likes,reply_count=x)
-            tab.append(a)  
+            tab.append(a)
+            if x>0:
+                for i in range(x): #wyśletlanie 5 pierwszych odpowiedzi 
+                    if x>5 and i==5:
+                        break
+                    names1=json.loads(data)["items"][ia]["replies"]["comments"][i]["snippet"]["authorDisplayName"]
+                    comt1=json.loads(data)["items"][ia]["replies"]["comments"][i]["snippet"]["textDisplay"]
+                    published1=json.loads(data)["items"][ia]["replies"]["comments"][i]["snippet"]["publishedAt"]
+                    p1=datetime.strptime(published1,"%Y-%m-%dT%H:%M:%SZ")
+                    likes1=json.loads(data)["items"][ia]["replies"]["comments"][i]["snippet"]["likeCount"]
+                    x1="Brak odczytu"
+                    a1 = Tablica(name=names1, description=comt1, date=p1, like_count=likes1,reply_count=x1)
+                    tab.append(a1)
+
     return render_template("comments.html",tab=tab)
 if __name__=="__main__":
     app.run(host="192.168.0.220") #wprowadz adres ip komputera
